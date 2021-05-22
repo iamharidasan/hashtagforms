@@ -1,13 +1,13 @@
 import React, { Fragment, useState } from "react"
 import axios from "axios"
-import Forms from "../../Components/Forms"
+import Forms from "../../Components/Forms/Forms"
 
 const Home = () => {
-  const [tab, setTab] = useState("Talent")
+  const [tab, setTab] = useState("Fan")
   const [selectedTimezone, setSelectedTimezone] = useState("")
-  const [selectedFunTimezone, setSelectedFunTimezone] = useState("")
+  const [selectedFanTimezone, setSelectedFanTimezone] = useState("")
   const [talentErrors, setTalentErrors] = useState()
-  const [funErrors, setFunErrors] = useState()
+  const [fanErrors, setFanErrors] = useState()
   const [talentFormFields, setTalentFormFields] = useState({
     first_name: "",
     last_name: "",
@@ -17,7 +17,7 @@ const Home = () => {
     timezone: "America/New_York",
     captcha: true,
   })
-  const [funFormFields, setFunFormFields] = useState({
+  const [fanFormFields, setFanFormFields] = useState({
     first_name: "",
     last_name: "",
     username: "",
@@ -32,9 +32,9 @@ const Home = () => {
       [e.target.name]: e.target.value,
     })
   }
-  const changeFunFormHandler = (e) => {
-    setFunFormFields({
-      ...funFormFields,
+  const changeFanFormHandler = (e) => {
+    setFanFormFields({
+      ...fanFormFields,
       [e.target.name]: e.target.value,
     })
   }
@@ -45,10 +45,10 @@ const Home = () => {
       timezone: val.value,
     })
   }
-  const timeZoneFunChangeHandler = (val) => {
-    setSelectedFunTimezone(val)
-    setFunFormFields({
-      ...funFormFields,
+  const timeZoneFanChangeHandler = (val) => {
+    setSelectedFanTimezone(val)
+    setFanFormFields({
+      ...fanFormFields,
       timezone: val.value,
     })
   }
@@ -115,12 +115,12 @@ const Home = () => {
         })
     }
   }
-  const funFormHandler = async (e) => {
+  const fanFormHandler = async (e) => {
     e.preventDefault()
-    const { first_name, last_name, username, email, password } = funFormFields
+    const { first_name, last_name, username, email, password } = fanFormFields
     const errors = validate(first_name, last_name, username, email, password)
     if (errors.length > 0) {
-      setFunErrors(errors)
+      setFanErrors(errors)
     } else {
       const config = {
         headers: {
@@ -129,8 +129,8 @@ const Home = () => {
       }
       await axios
         .post(
-          "https://apidev.fanconvo.com/api/v3/sign-up/fun",
-          funFormFields,
+          "https://apidev.fanconvo.com/api/v3/sign-up/fan",
+          fanFormFields,
           config
         )
         .then((response) => {
@@ -142,38 +142,40 @@ const Home = () => {
             for (const key of Object.keys(reason.response.data.data)) {
               errors.push(reason.response.data.data[key][0])
             }
-            setFunErrors(errors)
+            setFanErrors(errors)
           }
         })
     }
   }
   return (
     <Fragment>
-      <h1 className="text-center mt-0 mb-3">Sign Up</h1>
-      <ul className="nav nav-tabs">
-        <li className="nav-item">
-          <button
-            className={tab === "Talent" ? "nav-link active" : "nav-link"}
-            onClick={(e) => switchTabHandler("Talent", e)}
-          >
-            Talent
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={tab === "Fun" ? "nav-link active" : "nav-link"}
-            onClick={(e) => switchTabHandler("Fun", e)}
-          >
-            Fun
-          </button>
-        </li>
-      </ul>
+      <div className="text-center">
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <button
+              className={tab === "Fan" ? "nav-link active" : "nav-link"}
+              onClick={(e) => switchTabHandler("Fan", e)}
+            >
+              FAN SIGNUP
+            </button>
+          </li>
+          <li className="nav-item">
+            <button
+              className={tab === "Talent" ? "nav-link active" : "nav-link"}
+              onClick={(e) => switchTabHandler("Talent", e)}
+            >
+              TALENT SIGNUP
+            </button>
+          </li>
+        </ul>
+      </div>
       <div className="tab-content">
         <div
           className={
             tab === "Talent" ? "tab-pane fade show active" : "tab-pane fade"
           }
         >
+          <h2 className="text-center mt-3 mb-4">Create your Talent Account</h2>
           {talentErrors && talentErrors.length !== 0 && (
             <h4 className="mt-4 mb-2 text-danger text-center">
               {talentErrors.map((error, index) => {
@@ -181,33 +183,42 @@ const Home = () => {
               })}
             </h4>
           )}
-          <Forms
-            fields={talentFormFields}
-            submit={talentFormHandler}
-            fieldChange={changeTalentFormHandler}
-            timezone={timeZoneChangeHandler}
-            formName={"Talent"}
-          />
+          <div className="row">
+            <div className="col-12 col-lg-6 offset-lg-3">
+              <Forms
+                fields={talentFormFields}
+                submit={talentFormHandler}
+                fieldChange={changeTalentFormHandler}
+                timezone={timeZoneChangeHandler}
+                formName={"Talent"}
+              />
+            </div>
+          </div>
         </div>
         <div
           className={
-            tab === "Fun" ? "tab-pane fade show active" : "tab-pane fade"
+            tab === "Fan" ? "tab-pane fade show active" : "tab-pane fade"
           }
         >
-          {funErrors && funErrors.length !== 0 && (
+          <h2 className="text-center mt-3 mb-4">Create your Fan Account</h2>
+          {fanErrors && fanErrors.length !== 0 && (
             <h4 className="mt-4 mb-2 text-danger text-center">
-              {funErrors.map((error, index) => {
+              {fanErrors.map((error, index) => {
                 return <span key={index}>{error + ", "}</span>
               })}
             </h4>
           )}
-          <Forms
-            fields={funFormFields}
-            submit={funFormHandler}
-            fieldChange={changeFunFormHandler}
-            timezone={timeZoneFunChangeHandler}
-            formName={"Fun"}
-          />
+          <div className="row">
+            <div className="col-12 col-lg-6 offset-lg-3">
+              <Forms
+                fields={fanFormFields}
+                submit={fanFormHandler}
+                fieldChange={changeFanFormHandler}
+                timezone={timeZoneFanChangeHandler}
+                formName={"Fan"}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </Fragment>

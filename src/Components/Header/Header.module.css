@@ -1,0 +1,33 @@
+.Logo {
+  max-width: 50%;
+}
+.logoSlogan {
+  font-size: 16px;
+}
+.HeaderLinks a {
+  color: #fff;
+  text-decoration: none;
+}
+.Searchbar {
+  margin-left: 15px;
+  display: inline-block;
+  width: 60%;
+  background: transparent;
+  border: 2px solid #72f58d;
+  padding: 10px 15px;
+  border-radius: 30px;
+}
+.formSearch {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  color: #72f58d;
+}
+@media (max-width: 950px) {
+  .Logo {
+    max-width: 100%;
+  }
+}

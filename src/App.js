@@ -1,17 +1,24 @@
+import { Fragment } from "react"
 import "./App.css"
+import Footer from "./Components/Footer/Footer"
+import Header from "./Components/Header/Header"
 import Home from "./Screens/Home/Home"
 
 function App() {
   return (
-    <section className="App pt-5 pb-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <Home />
+    <Fragment>
+      <Header />
+      <section className="App">
+        <div className="container pt-5 pb-5 app-container">
+          <div className="row">
+            <div className="col-12">
+              <Home />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <Footer />
+    </Fragment>
   )
 }
 
